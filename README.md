@@ -18,12 +18,6 @@ Create your own headlines or let the app surprise you — all for fun and creati
 
 ## 💡 How to Run Locally
 ```bash
-# Clone this repository
-git clone https://github.com/yourusername/fake-news-headline-studio.git
-
-# Navigate into the folder
-cd fake-news-headline-studio
-
 # Install dependencies
 pip install streamlit
 

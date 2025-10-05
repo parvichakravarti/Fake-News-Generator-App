@@ -17,7 +17,6 @@ Create your own headlines or let the app surprise you — all for fun and creati
 ---
 
 ## 💡 How to Run Locally
-```bash
 # Install dependencies
 pip install streamlit
 

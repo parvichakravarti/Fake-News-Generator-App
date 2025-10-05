@@ -22,5 +22,5 @@ Create your own headlines or let the app surprise you — all for fun and creati
 pip install streamlit
 
 # Run the app
-streamlit run fake_news_headline_studio.py
+streamlit run fake_news_generator.py
 

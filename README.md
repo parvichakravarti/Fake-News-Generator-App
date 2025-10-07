@@ -1,4 +1,4 @@
-# 📰 Fake News Headline Studio
+# 📰 Fake News Headline Generator
 
 **A fun Streamlit app that generates hilarious, random, and totally fake news headlines!**  
 Create your own headlines or let the app surprise you — all for fun and creativity 😄  

@@ -1,75 +1,62 @@
-# fake_news_generator_app.py
-# --------------------------
-# A fun Streamlit web app that generates random, fake news headlines
-
 import streamlit as st
 import random
+from datetime import datetime
 
-# --------------------------
+# --------------------------------------------------
 # CONFIGURE PAGE
-# --------------------------
+# --------------------------------------------------
 st.set_page_config(
     page_title="Fake News Headline Generator 📰",
     page_icon="🗞️",
     layout="centered"
 )
 
-# --------------------------
-# APP TITLE AND INTRO
-# --------------------------
+# --------------------------------------------------
+# INTRO SECTION
+# --------------------------------------------------
 st.title("📰 Fake News Headline Generator")
-st.markdown(
-    """
-    Generate hilarious and totally fake headlines in seconds!😄  
-    ---
-    """
-)
+st.markdown("""
+your one-stop place to create the funniest and creative fake headlines!😄  
+---
+""")
 
-# --------------------------
+# --------------------------------------------------
 # DATA
-# --------------------------
+# --------------------------------------------------
 categories = {
     "Celebrities": [
-        "Shah Rukh Khan",
-        "Virat Kohli",
-        "Alia Bhatt",
-        "Salman Khan",
-        "Kareena Kapoor"
+        "Shah Rukh Khan", "Virat Kohli", "Alia Bhatt",
+        "Salman Khan", "Deepika Padukone", "Kareena Kapoor"
     ],
     "Politics": [
-        "Prime Minister Modi",
-        "Nirmala Sitharaman",
-        "Rahul Gandhi",
-        "Arvind Kejriwal",
-        "A Delhi MLA"
+        "Prime Minister Modi", "Nirmala Sitharaman", "Rahul Gandhi",
+        "Arvind Kejriwal", "A Delhi MLA", "A Secret Minister"
     ],
     "Animals": [
-        "A Mumbai Cat",
-        "A Group of Monkeys",
-        "A Clever Dog",
-        "An Angry Cow",
-        "A Dancing Peacock"
+        "A Mumbai Cat", "A Group of Monkeys", "A Clever Dog",
+        "An Angry Cow", "A Dancing Peacock", "A Sleepy Panda"
     ],
     "Common People": [
-        "An Auto Rickshaw Driver from Delhi",
-        "A College Student",
-        "A Chai Seller",
-        "A School Teacher",
-        "A Street Vendor"
+        "An Auto Rickshaw Driver from Delhi", "A College Student",
+        "A Chai Seller", "A School Teacher", "A Street Vendor", "A YouTuber"
+    ],
+    "Tech & AI": [
+        "ChatGPT", "Elon Musk", "A Robot from Bengaluru", "Google Bard",
+        "A Tech Intern", "AI-powered Rickshaw"
     ]
 }
 
 actions = [
     "launches a rocket",
-    "cancels a ticket",
+    "cancels a flight mid-air",
     "dances with a boxer",
-    "eats 50 samosas",
+    "eats 50 samosas in one sitting",
     "declares war on Apple",
-    "orders a 10-layer cake",
+    "starts a YouTube channel",
     "celebrates birthday with aliens",
-    "starts a podcast",
-    "opens a tech company",
-    "learns Python overnight"
+    "opens a tech startup",
+    "learns Python overnight",
+    "joins Indian Idol"
 ]
 
 places = [
@@ -81,13 +68,14 @@ places = [
     "at India Gate",
     "in a crowded metro",
     "inside a classroom",
-    "on top of Mount Everest"
+    "on top of Mount Everest",
+    "in the middle of a Zoom meeting"
 ]
 
-# --------------------------
-# SIDEBAR SETTINGS
-# --------------------------
-st.sidebar.header("⚙️ Customize Your Headlines")
+# --------------------------------------------------
+# SIDEBAR CONFIGURATION
+# --------------------------------------------------
+st.sidebar.header("🎛️ Customize Your Experience")
 
 selected_category = st.sidebar.selectbox(
     "Choose a category:", list(categories.keys())
@@ -97,29 +85,80 @@ num_headlines = st.sidebar.slider(
     "Number of headlines to generate", 1, 5, 1
 )
 
-st.sidebar.info("Tip: Change category and hit 'Generate' for different results!")
+mode = st.sidebar.radio(
+    "Headline Style:",
+    ["Funny", "Serious", "Crazy Mode 🤯"]
+)
 
-# --------------------------
-# GENERATE HEADLINES
-# --------------------------
-if st.button("🎲 Generate Headlines"):
-    st.subheader("🗞️ Breaking News Just In!")
+st.sidebar.markdown("---")
+st.sidebar.info("💡 Tip: Try ‘Crazy Mode’ for totally random combinations!")
 
+# --------------------------------------------------
+# GENERATE FUNCTION
+# --------------------------------------------------
+def generate_headline(category, mode):
+    subject = random.choice(categories[category])
+    action = random.choice(actions)
+    place = random.choice(places)
+
+    headline = f"**Breaking News:** {subject} {action} {place}!"
+    
+    if mode == "Funny":
+        headline += " 😂"
+    elif mode == "Serious":
+        headline = headline.replace("Breaking News", "Exclusive Report").replace("!", ".")
+    elif mode == "Crazy Mode 🤯":
+        headline = f"🚨 {subject.upper()} {action.upper()} {place.upper()}!!! 🌀🔥"
+
+    return headline
+
+# --------------------------------------------------
+# MAIN SECTION
+# --------------------------------------------------
+if "history" not in st.session_state:
+    st.session_state.history = []
+
+st.subheader("🗞️ Generate Your Fake Headlines")
+
+if st.button("🎲 Generate Now"):
+    st.markdown("### 🧠 Headlines Generated:")
     for _ in range(num_headlines):
-        subject = random.choice(categories[selected_category])
-        action = random.choice(actions)
-        place = random.choice(places)
-
-        headline = f"**Breaking News:** {subject} {action} {place}!"
-        st.markdown(f"<p style='font-size:18px; margin-bottom:10px;'>{headline}</p>", unsafe_allow_html=True)
-
-    st.success("✨ Headlines generated successfully!")
-
+        new_headline = generate_headline(selected_category, mode)
+        st.markdown(f"<p style='font-size:20px; margin-bottom:10px;'>{new_headline}</p>", unsafe_allow_html=True)
+        st.session_state.history.append((datetime.now().strftime("%H:%M:%S"), new_headline))
+    st.success("✅ Done! Scroll below for your headline history.")
 else:
-    st.info("Click 'Generate Headlines' to get your fake news dose!")
+    st.info("Click the **Generate Now** button above to see your headlines!")
 
-# --------------------------
-# FOOTER
-# --------------------------
+# --------------------------------------------------
+# CUSTOM HEADLINE BUILDER
+# --------------------------------------------------
 st.markdown("---")
-st.caption("🧠 Created for fun using Streamlit | 2025 Fake News")
+st.subheader("🖋️ Create Your Own Custom Headline")
+
+user_subject = st.text_input("Who or what is your subject? (e.g., My Cat)")
+user_action = st.text_input("What action did they do? (e.g., Became a DJ)")
+user_place = st.text_input("Where did it happen? (e.g., In my kitchen)")
+
+if st.button("✨ Create My Custom Headline"):
+    if user_subject and user_action and user_place:
+        custom_headline = f"**Breaking News:** {user_subject} {user_action} {user_place}!"
+        st.success(custom_headline)
+        st.session_state.history.append((datetime.now().strftime("%H:%M:%S"), custom_headline))
+    else:
+        st.warning("Please fill in all three fields before creating a headline!")
+
+# --------------------------------------------------
+# HEADLINE HISTORY
+# --------------------------------------------------
+if st.session_state.history:
+    st.markdown("---")
+    st.subheader("📜 Headline History")
+    for time, headline in reversed(st.session_state.history[-10:]):
+        st.markdown(f"<p style='font-size:16px;'><b>{time}</b> — {headline}</p>", unsafe_allow_html=True)
+
+# --------------------------------------------------
+# FOOTER
+# --------------------------------------------------
+st.markdown("---")
+st.caption("🧠 Built with ❤️ using Streamlit | Have fun responsibly 😄")
